@@ -9,7 +9,7 @@ import type { JamendoTrack } from "@/services/jamendo";
 import { Button } from "@/components/ui/button";
 import { IoPlaySharp, IoPauseSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LikeButton from "@/components/LikeButton";
 
 interface TrackListItemProps {
@@ -27,11 +27,17 @@ function formatDuration(seconds: number): string {
 
 export default function TrackListItem({ track, index, tracks, showAlbum = true }: TrackListItemProps) {
     const navigate = useNavigate();
+    const location = useLocation();
     const { currentTrack, isPlaying, playTrackFromQueue, togglePlay } =
         usePlayerStore();
 
     const isCurrentTrack = currentTrack?.id === track.id;
     const isCurrentlyPlaying = isCurrentTrack && isPlaying;
+    const collectionPath = track.album_id
+        ? `/album/${track.album_id}`
+        : location.pathname.startsWith("/album/") || location.pathname.startsWith("/playlist/")
+            ? location.pathname
+            : "";
 
     const handlePlay = () => {
         if (isCurrentTrack) {
@@ -43,14 +49,14 @@ export default function TrackListItem({ track, index, tracks, showAlbum = true }
 
     return (
         <motion.div
-            className={`group grid items-center gap-2 sm:gap-4 px-2 sm:px-4 py-2 rounded-md hover:bg-muted/50 cursor-pointer transition-colors ${isCurrentTrack ? "bg-muted/30" : ""
+            className={`track-row group grid items-center gap-2 sm:gap-4 px-2 sm:px-4 py-2 rounded-md hover:bg-muted/50 cursor-pointer transition-colors ${isCurrentTrack ? "bg-muted/30" : ""
                 }`}
             style={{
                 gridTemplateColumns: showAlbum
                     ? "32px 1fr minmax(0, 1fr) auto auto"
                     : "32px 1fr auto auto",
             }}
-            onClick={handlePlay}
+            onClick={() => collectionPath && navigate(collectionPath)}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2, delay: index * 0.03 }}
@@ -89,22 +95,28 @@ export default function TrackListItem({ track, index, tracks, showAlbum = true }
                     loading="lazy"
                 />
                 <div className="min-w-0">
-                    <p
+                    <button
+                        type="button"
                         className={`text-sm font-medium truncate ${isCurrentTrack ? "text-tunes" : "text-foreground"
-                            }`}
+                            } block max-w-full text-left hover:underline underline-offset-4`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (collectionPath) navigate(collectionPath);
+                        }}
                     >
                         {track.name}
-                    </p>
+                    </button>
                     <p className="text-xs text-muted-foreground truncate">
-                        <span
-                            className="hover:underline cursor-pointer"
+                        <button
+                            type="button"
+                            className="hover:underline text-left"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 navigate(`/artist/${track.artist_id}`);
                             }}
                         >
                             {track.artist_name}
-                        </span>
+                        </button>
                     </p>
                 </div>
             </div>

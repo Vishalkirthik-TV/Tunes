@@ -40,18 +40,18 @@ export default function LikedSongsPage() {
     };
 
     return (
-        <div className="min-h-full">
+        <div className="page-root min-h-full">
             <TopBar />
 
             {/* ── Liked Songs Header (Purple Gradient) ──── */}
             <motion.div
-                className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6 px-3 sm:px-6 pb-6 sm:pb-8 pt-6 bg-gradient-to-b from-indigo-600/50 via-purple-600/30 to-transparent -mt-[60px] pt-[80px]"
+                className="detail-hero flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6 px-3 sm:px-6 pb-6 sm:pb-8 pt-6 bg-gradient-to-b from-indigo-600/50 via-purple-600/30 to-transparent -mt-[60px] pt-[80px]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
             >
                 {/* Gradient Icon */}
-                <div className="w-36 h-36 sm:w-56 sm:h-56 rounded-md overflow-hidden shadow-2xl flex-shrink-0 bg-gradient-to-br from-indigo-600 via-purple-500 to-blue-400 flex items-center justify-center">
+                <div className="detail-art w-36 h-36 sm:w-56 sm:h-56 rounded-md overflow-hidden shadow-2xl flex-shrink-0 bg-gradient-to-br from-indigo-600 via-purple-500 to-blue-400 flex items-center justify-center">
                     <IoHeart className="w-14 h-14 sm:w-20 sm:h-20 text-white" />
                 </div>
 
@@ -71,7 +71,7 @@ export default function LikedSongsPage() {
             {/* ── Action Buttons ──────────────────────────── */}
             {likedSongs.length > 0 && (
                 <>
-                    <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4">
+                    <div className="detail-actions flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4">
                         <Button
                             size="lg"
                             className="rounded-full bg-tunes hover:bg-tunes/90 text-tunes-foreground font-semibold h-14 w-14 p-0 hover:scale-105 transition-transform shadow-lg"

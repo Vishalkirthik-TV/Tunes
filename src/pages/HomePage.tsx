@@ -49,7 +49,7 @@ function HorizontalSkeleton({ count = 6, circular = false }: { count?: number; c
 function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
         <motion.h2
-            className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4"
+            className="section-title text-xl sm:text-2xl font-bold mb-3 sm:mb-4"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
@@ -98,10 +98,10 @@ export default function HomePage() {
         hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
     return (
-        <div className="min-h-full">
+        <div className="page-root min-h-full">
             <TopBar />
 
-            <div className="px-3 sm:px-6 pb-8">
+            <div className="page-content px-3 sm:px-6 pb-8">
                 {/* Greeting */}
                 <motion.h1
                     className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6"

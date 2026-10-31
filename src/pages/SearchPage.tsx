@@ -95,10 +95,10 @@ export default function SearchPage() {
     ];
 
     return (
-        <div className="min-h-full">
+        <div className="page-root min-h-full">
             <TopBar />
 
-            <div className="px-3 sm:px-6 pb-8">
+            <div className="page-content px-3 sm:px-6 pb-8">
                 {/* Search Header */}
                 <motion.div
                     className="mb-8"
@@ -115,7 +115,7 @@ export default function SearchPage() {
                             placeholder="What do you want to listen to?"
                             value={query}
                             onChange={handleQueryChange}
-                            className="pl-10 bg-muted/50 border-0 h-12 rounded-full text-sm placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-foreground"
+                            className="search-field pl-10 h-12 text-sm placeholder:text-muted-foreground"
                         />
                     </div>
                 </motion.div>
@@ -184,7 +184,7 @@ export default function SearchPage() {
                                         key={genre.name}
                                         whileHover={{ scale: 1.03 }}
                                         whileTap={{ scale: 0.97 }}
-                                        className={`bg-gradient-to-br ${genre.color} rounded-lg p-3 sm:p-4 h-24 sm:h-32 cursor-pointer relative overflow-hidden`}
+                                        className={`browse-tile bg-gradient-to-br ${genre.color} rounded-lg p-3 sm:p-4 h-24 sm:h-32 cursor-pointer relative overflow-hidden`}
                                         onClick={() => navigate(`/genre/${genre.name.toLowerCase()}`)}
                                     >
                                         <span className="text-base sm:text-lg font-bold text-white">

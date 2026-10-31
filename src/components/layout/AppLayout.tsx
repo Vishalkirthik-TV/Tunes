@@ -10,13 +10,13 @@ import MobileNav from "@/components/layout/MobileNav";
 
 export default function AppLayout() {
     return (
-        <div className="h-screen flex flex-col overflow-hidden bg-background">
+        <div className="app-shell h-screen flex flex-col overflow-hidden bg-background">
             {/* ── Main Area: Sidebar + Content ─────────────── */}
             <div className="flex flex-1 overflow-hidden">
                 <Sidebar />
 
                 {/* ── Main Content ────────────────────────────── */}
-                <main className="flex-1 overflow-y-auto bg-gradient-to-b from-card to-background rounded-lg md:mr-2 md:my-2">
+                <main className="app-main flex-1 overflow-y-auto">
                     <Outlet />
                 </main>
             </div>

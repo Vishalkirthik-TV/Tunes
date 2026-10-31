@@ -12,7 +12,7 @@ export default function TopBar() {
     const navigate = useNavigate();
 
     return (
-        <header className="sticky top-0 z-10 flex items-center gap-3 px-3 sm:px-6 py-3 sm:py-4 bg-gradient-to-b from-card/80 to-transparent backdrop-blur-sm">
+        <header className="app-topbar sticky top-0 z-10 flex items-center gap-3">
             {/* Tunes logo — mobile only */}
             <div
                 className="flex items-center gap-2 cursor-pointer md:hidden"

@@ -22,7 +22,7 @@ export default function AlbumCard({ album }: AlbumCardProps) {
     return (
         <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.15 }}>
             <Card
-                className="group relative bg-card/50 hover:bg-muted/50 border-0 p-3 cursor-pointer transition-colors duration-200 overflow-hidden"
+                className="music-card group relative bg-card/50 hover:bg-muted/50 border-0 p-3 cursor-pointer transition-colors duration-200 overflow-hidden"
                 onClick={() => navigate(`/album/${album.id}`)}
             >
                 {/* Album Art */}
@@ -58,15 +58,16 @@ export default function AlbumCard({ album }: AlbumCardProps) {
                     <p className="text-sm font-semibold truncate">{album.name}</p>
                     <p className="text-xs text-muted-foreground truncate mt-0.5">
                         {year && `${year} · `}
-                        <span
-                            className="hover:underline cursor-pointer"
+                        <button
+                            type="button"
+                            className="hover:underline text-left"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 navigate(`/artist/${album.artist_id}`);
                             }}
                         >
                             {album.artist_name}
-                        </span>
+                        </button>
                     </p>
                 </div>
             </Card>

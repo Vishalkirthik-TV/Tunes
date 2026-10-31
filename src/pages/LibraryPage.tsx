@@ -42,7 +42,7 @@ export default function LibraryPage() {
     };
 
     return (
-        <div className="min-h-full">
+        <div className="page-root min-h-full">
             <TopBar />
 
             <div className="px-3 sm:px-6 pb-8">
@@ -84,7 +84,7 @@ export default function LibraryPage() {
                         {/* Liked Songs Card */}
                         {(activeTab === "all" || activeTab === "playlists") && (
                             <Card
-                                className="group flex items-center gap-4 p-3 bg-card/50 hover:bg-muted/50 border-0 cursor-pointer transition-colors"
+                                className="library-item group flex items-center gap-4 p-3 bg-card/50 hover:bg-muted/50 border-0 cursor-pointer transition-colors"
                                 onClick={() => navigate("/liked")}
                             >
                                 <div className="w-12 h-12 rounded-md bg-gradient-to-br from-indigo-600 to-purple-400 flex items-center justify-center flex-shrink-0 shadow-md">
@@ -117,7 +117,7 @@ export default function LibraryPage() {
                             savedAlbums.map((album) => (
                                 <Card
                                     key={album.id}
-                                    className="group flex items-center gap-4 p-3 bg-card/50 hover:bg-muted/50 border-0 cursor-pointer transition-colors"
+                                    className="library-item group flex items-center gap-4 p-3 bg-card/50 hover:bg-muted/50 border-0 cursor-pointer transition-colors"
                                     onClick={() => navigate(`/album/${album.id}`)}
                                 >
                                     <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 shadow-md bg-muted">
@@ -147,7 +147,7 @@ export default function LibraryPage() {
                             followedArtists.map((artist) => (
                                 <Card
                                     key={artist.id}
-                                    className="group flex items-center gap-4 p-3 bg-card/50 hover:bg-muted/50 border-0 cursor-pointer transition-colors"
+                                    className="library-item group flex items-center gap-4 p-3 bg-card/50 hover:bg-muted/50 border-0 cursor-pointer transition-colors"
                                     onClick={() => navigate(`/artist/${artist.id}`)}
                                 >
                                     <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 shadow-md bg-muted">

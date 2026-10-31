@@ -37,7 +37,7 @@ export default function Sidebar() {
     const libraryItemCount = savedAlbums.length + followedArtists.length;
 
     return (
-        <aside className="hidden md:flex flex-col w-[280px] min-w-[280px] gap-2 p-2 h-full">
+        <aside className="app-sidebar hidden md:flex flex-col h-full">
             {/* ── Top Nav Card ──────────────────────────────── */}
             <div className="bg-card rounded-lg p-4">
                 {/* Logo */}

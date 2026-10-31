@@ -5,7 +5,8 @@
  * Sits above the MobileNav on small screens.
  */
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { usePlayerStore } from "@/stores/playerStore";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -18,9 +19,11 @@ import {
     IoVolumeMuteSharp,
     IoShuffleSharp,
     IoRepeatSharp,
+    IoCloseSharp,
 } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import LikeButton from "@/components/LikeButton";
+import { Sheet, SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 function formatTime(seconds: number): string {
     if (isNaN(seconds) || seconds === 0) return "0:00";
@@ -30,6 +33,9 @@ function formatTime(seconds: number): string {
 }
 
 export default function MusicPlayer() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [playerOpen, setPlayerOpen] = useState(false);
     const {
         currentTrack,
         isPlaying,
@@ -99,19 +105,26 @@ export default function MusicPlayer() {
     );
 
     const progressPercent = duration > 0 ? (progress / duration) * 100 : 0;
+    const trackCollectionPath = currentTrack
+        ? currentTrack.album_id
+            ? `/album/${currentTrack.album_id}`
+            : location.pathname.startsWith("/album/") || location.pathname.startsWith("/playlist/")
+                ? location.pathname
+                : ""
+        : "";
 
     // ── Empty state ──────────────────────────────────────
     if (!currentTrack) {
         return (
             <>
                 {/* Desktop empty */}
-                <footer className="hidden md:flex h-[90px] border-t border-border bg-card/95 backdrop-blur-lg items-center justify-center">
+                <footer className="music-player hidden md:flex h-[90px] border-t border-border bg-card/95 backdrop-blur-lg items-center justify-center">
                     <p className="text-sm text-muted-foreground">
                         Select a track to start listening
                     </p>
                 </footer>
                 {/* Mobile empty — just a thin line */}
-                <footer className="md:hidden h-[56px] border-t border-border bg-card/95 backdrop-blur-lg flex items-center justify-center">
+                <footer className="mobile-player md:hidden h-[56px] border-t border-border bg-card/95 backdrop-blur-lg flex items-center justify-center">
                     <p className="text-xs text-muted-foreground">
                         Select a track to start listening
                     </p>
@@ -131,10 +144,124 @@ export default function MusicPlayer() {
                 onEnded={handleEnded}
             />
 
+            <Sheet open={playerOpen} onOpenChange={setPlayerOpen}>
+                <SheetContent
+                    side="bottom"
+                    showCloseButton={false}
+                    className="now-playing-sheet !inset-0 !h-[100dvh] !max-h-none !w-full !max-w-none !gap-0 !rounded-none !border-0 !p-0"
+                >
+                    <div className="now-playing-backdrop" aria-hidden="true">
+                        <img src={currentTrack.image} alt="" />
+                    </div>
+                    <div className="now-playing-content">
+                        <div className="now-playing-header">
+                            <SheetClose asChild>
+                                <Button variant="ghost" size="icon" className="now-playing-close" aria-label="Close expanded player">
+                                    <IoCloseSharp className="h-5 w-5" />
+                                </Button>
+                            </SheetClose>
+                            <div className="min-w-0 text-center">
+                                <SheetTitle className="now-playing-overline">NOW PLAYING</SheetTitle>
+                                <p className="now-playing-context">
+                                    {currentTrack.album_name || "Your music"}
+                                </p>
+                            </div>
+                            <span className="now-playing-header-spacer" aria-hidden="true" />
+                        </div>
+
+                        <div className="now-playing-main">
+                            <motion.img
+                                key={currentTrack.id}
+                                src={currentTrack.image}
+                                alt={`${currentTrack.name} album artwork`}
+                                className="now-playing-artwork"
+                                initial={{ opacity: 0.75, scale: 0.97 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ type: "spring", damping: 1, duration: 0.4 }}
+                            />
+
+                            <div className="now-playing-details">
+                                <div className="min-w-0">
+                                    <button
+                                        type="button"
+                                        className="now-playing-track-title"
+                                        onClick={() => {
+                                            if (trackCollectionPath) {
+                                                setPlayerOpen(false);
+                                                navigate(trackCollectionPath);
+                                            }
+                                        }}
+                                        disabled={!trackCollectionPath}
+                                    >
+                                        {currentTrack.name}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="now-playing-artist"
+                                        onClick={() => {
+                                            setPlayerOpen(false);
+                                            navigate(`/artist/${currentTrack.artist_id}`);
+                                        }}
+                                    >
+                                        {currentTrack.artist_name}
+                                    </button>
+                                </div>
+                                <LikeButton track={currentTrack} size="md" className="text-white/75 hover:text-white" />
+                            </div>
+
+                            <div className="now-playing-progress">
+                                <Slider
+                                    value={[progress]}
+                                    max={duration || 100}
+                                    step={0.1}
+                                    onValueChange={handleSeek}
+                                    aria-label="Playback position"
+                                    className="[&_[data-slot=slider-range]]:bg-white [&_[data-slot=slider-track]]:bg-white/25 [&_[data-slot=slider-thumb]]:border-white"
+                                />
+                                <div className="now-playing-times">
+                                    <span>{formatTime(progress)}</span>
+                                    <span>{formatTime(duration)}</span>
+                                </div>
+                            </div>
+
+                            <div className="now-playing-controls">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="now-playing-skip"
+                                    onClick={previousTrack}
+                                    aria-label="Previous track"
+                                >
+                                    <IoPlaySkipBackSharp />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="now-playing-play"
+                                    onClick={togglePlay}
+                                    aria-label={isPlaying ? "Pause" : "Play"}
+                                >
+                                    {isPlaying ? <IoPauseSharp /> : <IoPlaySharp />}
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="now-playing-skip"
+                                    onClick={nextTrack}
+                                    aria-label="Next track"
+                                >
+                                    <IoPlaySkipForwardSharp />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </SheetContent>
+            </Sheet>
+
             {/* ══════════════════════════════════════════════════
                 MOBILE MINI-PLAYER (< md)
                 ══════════════════════════════════════════════════ */}
-            <footer className="md:hidden relative bg-card/95 backdrop-blur-lg border-t border-border">
+            <footer className="mobile-player md:hidden relative bg-card/95 backdrop-blur-lg border-t border-border">
                 {/* Progress line at top of mini-player */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-muted">
                     <div
@@ -154,18 +281,36 @@ export default function MusicPlayer() {
                             exit={{ opacity: 0, x: 10 }}
                             transition={{ duration: 0.15 }}
                         >
-                            <img
-                                src={currentTrack.image}
-                                alt={currentTrack.name}
-                                className="w-10 h-10 rounded object-cover shadow-md flex-shrink-0"
-                            />
+                            <button
+                                type="button"
+                                className="player-artwork-trigger"
+                                onClick={() => setPlayerOpen(true)}
+                                aria-label={`Open player for ${currentTrack.name}`}
+                            >
+                                <img
+                                    src={currentTrack.image}
+                                    alt=""
+                                    className="w-10 h-10 rounded object-cover shadow-md flex-shrink-0"
+                                />
+                            </button>
                             <div className="min-w-0 flex-1">
-                                <p className="text-sm font-medium truncate leading-tight">
+                                <button
+                                    type="button"
+                                    className="player-track-link text-sm font-medium truncate leading-tight"
+                                    onClick={() => {
+                                        if (trackCollectionPath) navigate(trackCollectionPath);
+                                    }}
+                                    disabled={!trackCollectionPath}
+                                >
                                     {currentTrack.name}
-                                </p>
-                                <p className="text-[11px] text-muted-foreground truncate leading-tight">
+                                </button>
+                                <button
+                                    type="button"
+                                    className="player-artist-link text-[11px] text-muted-foreground truncate leading-tight"
+                                    onClick={() => navigate(`/artist/${currentTrack.artist_id}`)}
+                                >
                                     {currentTrack.artist_name}
-                                </p>
+                                </button>
                             </div>
                         </motion.div>
                     </AnimatePresence>
@@ -192,7 +337,7 @@ export default function MusicPlayer() {
             {/* ══════════════════════════════════════════════════
                 DESKTOP FULL PLAYER (>= md)
                 ══════════════════════════════════════════════════ */}
-            <footer className="hidden md:grid h-[90px] border-t border-border bg-card/95 backdrop-blur-lg px-4 grid-cols-3 items-center gap-4">
+            <footer className="music-player hidden md:grid h-[90px] border-t border-border bg-card/95 backdrop-blur-lg px-4 grid-cols-3 items-center gap-4">
                 {/* ── Left: Track Info ────────────────────────── */}
                 <AnimatePresence mode="wait">
                     <motion.div
@@ -203,18 +348,36 @@ export default function MusicPlayer() {
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <img
-                            src={currentTrack.image}
-                            alt={currentTrack.name}
-                            className="w-14 h-14 rounded-md object-cover shadow-lg"
-                        />
+                        <button
+                            type="button"
+                            className="player-artwork-trigger"
+                            onClick={() => setPlayerOpen(true)}
+                            aria-label={`Open player for ${currentTrack.name}`}
+                        >
+                            <img
+                                src={currentTrack.image}
+                                alt=""
+                                className="w-14 h-14 rounded-md object-cover shadow-lg"
+                            />
+                        </button>
                         <div className="min-w-0">
-                            <p className="text-sm font-medium truncate hover:underline cursor-pointer">
+                            <button
+                                type="button"
+                                className="player-track-link text-sm font-medium truncate"
+                                onClick={() => {
+                                    if (trackCollectionPath) navigate(trackCollectionPath);
+                                }}
+                                disabled={!trackCollectionPath}
+                            >
                                 {currentTrack.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground truncate">
+                            </button>
+                            <button
+                                type="button"
+                                className="player-artist-link text-xs text-muted-foreground truncate"
+                                onClick={() => navigate(`/artist/${currentTrack.artist_id}`)}
+                            >
                                 {currentTrack.artist_name}
-                            </p>
+                            </button>
                         </div>
                         <LikeButton track={currentTrack} />
                     </motion.div>

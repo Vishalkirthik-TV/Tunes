@@ -20,7 +20,7 @@ export default function MobileNav() {
     const navigate = useNavigate();
 
     return (
-        <nav className="md:hidden flex items-center justify-around border-t border-border bg-card/95 backdrop-blur-lg py-2 px-4">
+        <nav className="mobile-nav md:hidden flex items-center justify-around border-t border-border bg-card/95 backdrop-blur-lg py-2 px-4">
             {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 const Icon = isActive ? item.icon : item.inactiveIcon;
@@ -29,6 +29,7 @@ export default function MobileNav() {
                     <button
                         key={item.path}
                         onClick={() => navigate(item.path)}
+                        aria-current={isActive ? "page" : undefined}
                         className={`flex flex-col items-center gap-1 text-[10px] font-semibold transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"
                             }`}
                     >

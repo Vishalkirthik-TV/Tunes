@@ -86,12 +86,12 @@ export default function GenrePage() {
     };
 
     return (
-        <div className="min-h-full">
+        <div className="page-root min-h-full">
             <TopBar />
 
             {/* ── Genre Header ──────────────────────────── */}
             <motion.div
-                className={`bg-gradient-to-b ${getGradient(genreName || "")} px-3 sm:px-6 pb-6 sm:pb-8 pt-6 -mt-[60px] pt-[80px]`}
+                className={`detail-hero genre-hero bg-gradient-to-b ${getGradient(genreName || "")} px-3 sm:px-6 pb-6 sm:pb-8 pt-6 -mt-[60px] pt-[80px]`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
@@ -102,7 +102,7 @@ export default function GenrePage() {
             </motion.div>
 
             {/* ── Action Buttons ──────────────────────────── */}
-            <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4">
+            <div className="detail-actions flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4">
                 <Button
                     size="lg"
                     className="rounded-full bg-tunes hover:bg-tunes/90 text-tunes-foreground font-semibold h-14 w-14 p-0 hover:scale-105 transition-transform shadow-lg"

@@ -37,8 +37,10 @@ export default function TrackCard({ track, tracks }: TrackCardProps) {
     return (
         <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.15 }}>
             <Card
-                className="group relative bg-card/50 hover:bg-muted/50 border-0 p-3 cursor-pointer transition-colors duration-200 overflow-hidden"
-                onClick={handlePlay}
+                className="music-card group relative bg-card/50 hover:bg-muted/50 border-0 p-3 cursor-pointer transition-colors duration-200 overflow-hidden"
+                onClick={() => {
+                    if (track.album_id) navigate(`/album/${track.album_id}`);
+                }}
             >
                 {/* Cover Art */}
                 <div className="relative aspect-square mb-3 rounded-md overflow-hidden shadow-lg">
@@ -72,21 +74,27 @@ export default function TrackCard({ track, tracks }: TrackCardProps) {
 
                 {/* Track Info */}
                 <div className="min-w-0">
-                    <p
+                    <button
+                        type="button"
                         className={`text-sm font-semibold truncate ${isCurrentTrack ? "text-tunes" : "text-foreground"
-                            }`}
+                            } block max-w-full text-left hover:underline underline-offset-4`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (track.album_id) navigate(`/album/${track.album_id}`);
+                        }}
                     >
                         {track.name}
-                    </p>
-                    <p
-                        className="text-xs text-muted-foreground truncate mt-0.5 hover:underline cursor-pointer"
+                    </button>
+                    <button
+                        type="button"
+                        className="text-xs text-muted-foreground truncate mt-0.5 hover:underline text-left"
                         onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/artist/${track.artist_id}`);
                         }}
                     >
                         {track.artist_name}
-                    </p>
+                    </button>
                 </div>
             </Card>
         </motion.div>

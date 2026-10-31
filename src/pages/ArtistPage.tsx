@@ -73,7 +73,7 @@ export default function ArtistPage() {
 
     if (loading) {
         return (
-            <div className="min-h-full">
+            <div className="page-root min-h-full">
                 <TopBar />
                 <div className="px-6 pb-8">
                     <div className="flex items-end gap-6 mb-8">
@@ -102,7 +102,7 @@ export default function ArtistPage() {
 
     if (!artist) {
         return (
-            <div className="min-h-full">
+            <div className="page-root min-h-full">
                 <TopBar />
                 <div className="flex items-center justify-center py-20">
                     <p className="text-xl text-muted-foreground">Artist not found</p>
@@ -112,18 +112,18 @@ export default function ArtistPage() {
     }
 
     return (
-        <div className="min-h-full">
+        <div className="page-root min-h-full">
             <TopBar />
 
             {/* ── Artist Header ─────────────────────────────── */}
             <motion.div
-                className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6 px-3 sm:px-6 pb-6"
+                className="detail-hero flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6 px-3 sm:px-6 pb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
             >
                 {/* Artist Image */}
-                <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-full overflow-hidden shadow-2xl flex-shrink-0 bg-muted">
+                <div className="detail-art artist-art w-32 h-32 sm:w-48 sm:h-48 rounded-full overflow-hidden shadow-2xl flex-shrink-0 bg-muted">
                     {artist.image ? (
                         <img
                             src={artist.image}
@@ -153,7 +153,7 @@ export default function ArtistPage() {
             </motion.div>
 
             {/* ── Action Buttons ────────────────────────────── */}
-            <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4">
+            <div className="detail-actions flex items-center gap-3 sm:gap-4 px-3 sm:px-6 py-3 sm:py-4">
                 <Button
                     size="lg"
                     className="rounded-full bg-tunes hover:bg-tunes/90 text-tunes-foreground font-semibold h-14 w-14 p-0 hover:scale-105 transition-transform shadow-lg"

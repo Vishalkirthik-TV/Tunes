@@ -21,7 +21,7 @@ export default function ArtistCard({ artist }: ArtistCardProps) {
     return (
         <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.15 }}>
             <Card
-                className="group relative bg-card/50 hover:bg-muted/50 border-0 p-4 cursor-pointer transition-colors duration-200 overflow-hidden"
+                className="music-card artist-card group relative bg-card/50 hover:bg-muted/50 border-0 p-3 cursor-pointer transition-colors duration-200 overflow-hidden"
                 onClick={() => navigate(`/artist/${artist.id}`)}
             >
                 {/* Circular Artist Image */}
