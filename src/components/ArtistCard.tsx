@@ -5,11 +5,9 @@
  */
 
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { IoMusicalNotes, IoPlaySharp } from "react-icons/io5";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { JamendoArtist } from "@/services/jamendo";
 
 interface ArtistCardProps {
@@ -17,7 +15,6 @@ interface ArtistCardProps {
 }
 
 export default function ArtistCard({ artist }: ArtistCardProps) {
-    const navigate = useNavigate();
     const [failedImage, setFailedImage] = useState<string | null>(null);
 
     const initials = artist.name
@@ -29,52 +26,48 @@ export default function ArtistCard({ artist }: ArtistCardProps) {
         .toUpperCase();
 
     return (
-        <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.15 }}>
-            <Card
-                className="music-card artist-card group relative bg-card/50 hover:bg-muted/50 border-0 p-3 cursor-pointer transition-colors duration-200 overflow-hidden"
-                onClick={() => navigate(`/artist/${artist.id}`)}
+        <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.18 }}>
+            <Link
+                to={`/artist/${artist.id}`}
+                aria-label={`View ${artist.name}`}
+                className="artist-card group block cursor-pointer text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
-                {/* Circular Artist Image */}
-                <div className="relative aspect-square mb-4 rounded-full overflow-hidden shadow-xl mx-auto ring-1 ring-border/70">
-                    {artist.image && failedImage !== artist.image ? (
-                        <img
-                            src={artist.image}
-                            alt={artist.name}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                            onError={() => setFailedImage(artist.image)}
-                        />
-                    ) : (
-                        <div className="relative flex w-full h-full items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-400/30 via-teal-700/40 to-slate-950">
-                            <IoMusicalNotes
-                                aria-hidden="true"
-                                className="absolute -right-2 -top-3 h-24 w-24 rotate-12 text-white/10"
+                <div className="relative mb-3 aspect-square w-full">
+                    <div className="absolute inset-0 overflow-hidden rounded-full bg-muted shadow-lg ring-1 ring-border/70">
+                        {artist.image && failedImage !== artist.image ? (
+                            <img
+                                src={artist.image}
+                                alt=""
+                                className="h-full w-full object-cover"
+                                loading="lazy"
+                                onError={() => setFailedImage(artist.image)}
                             />
-                            <span className="relative flex h-16 w-16 items-center justify-center rounded-full border border-white/25 bg-black/15 text-2xl font-bold tracking-wide text-white shadow-inner backdrop-blur-sm">
-                                {initials || <IoMusicalNotes aria-hidden="true" />}
-                            </span>
-                        </div>
-                    )}
+                        ) : (
+                            <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-800 to-slate-950">
+                                <IoMusicalNotes
+                                    aria-hidden="true"
+                                    className="absolute -right-3 -top-3 h-28 w-28 rotate-12 text-white/10"
+                                />
+                                <span className="relative text-4xl font-semibold tracking-wide text-white drop-shadow-md">
+                                    {initials || <IoMusicalNotes aria-hidden="true" />}
+                                </span>
+                            </div>
+                        )}
+                    </div>
 
-                    {/* Play Button Overlay */}
-                    <Button
-                        size="icon"
-                        className="absolute bottom-2 right-2 w-12 h-12 rounded-full bg-tunes hover:bg-tunes/90 text-tunes-foreground shadow-xl hover:scale-105 transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/artist/${artist.id}`);
-                        }}
+                    <span
+                        aria-hidden="true"
+                        className="artist-card-play absolute bottom-2 right-2 z-10 flex h-11 w-11 translate-y-1 items-center justify-center rounded-full border-2 border-background bg-tunes text-tunes-foreground opacity-0 shadow-lg transition-all group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
                     >
-                        <IoPlaySharp className="w-5 h-5 ml-0.5" />
-                    </Button>
+                        <IoPlaySharp className="ml-0.5 h-4 w-4" />
+                    </span>
                 </div>
 
-                {/* Artist Info */}
-                <div className="text-center min-w-0">
-                    <p className="text-sm font-semibold truncate">{artist.name}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Artist</p>
+                <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">{artist.name}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">Artist</p>
                 </div>
-            </Card>
+            </Link>
         </motion.div>
     );
 }

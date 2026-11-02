@@ -13,7 +13,14 @@ import TrackCard from "@/components/TrackCard";
 import TopBar from "@/components/layout/TopBar";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { IoSearch } from "react-icons/io5";
+import {
+    IoArrowForwardSharp,
+    IoDisc,
+    IoHeadset,
+    IoMusicalNotes,
+    IoRadio,
+    IoSearch,
+} from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function SearchPage() {
@@ -76,22 +83,22 @@ export default function SearchPage() {
 
     // Genre browse categories — now navigate to genre pages
     const genres = [
-        { name: "Pop", color: "from-pink-500 to-rose-600" },
-        { name: "Rock", color: "from-red-600 to-orange-600" },
-        { name: "Electronic", color: "from-blue-500 to-cyan-500" },
-        { name: "Jazz", color: "from-amber-500 to-yellow-600" },
-        { name: "Hip Hop", color: "from-purple-600 to-violet-600" },
-        { name: "Classical", color: "from-emerald-500 to-teal-600" },
-        { name: "Chill", color: "from-sky-400 to-indigo-500" },
-        { name: "Ambient", color: "from-slate-500 to-zinc-600" },
-        { name: "Metal", color: "from-gray-700 to-zinc-900" },
-        { name: "Country", color: "from-amber-600 to-orange-700" },
-        { name: "Blues", color: "from-blue-700 to-indigo-900" },
-        { name: "Folk", color: "from-orange-400 to-amber-600" },
-        { name: "Latin", color: "from-red-500 to-pink-500" },
-        { name: "Soul", color: "from-purple-500 to-pink-600" },
-        { name: "Reggae", color: "from-green-500 to-yellow-500" },
-        { name: "Indie", color: "from-teal-500 to-emerald-600" },
+        { name: "Pop", color: "from-pink-500 to-rose-600", icon: IoMusicalNotes },
+        { name: "Rock", color: "from-red-600 to-orange-600", icon: IoRadio },
+        { name: "Electronic", color: "from-blue-500 to-cyan-500", icon: IoHeadset },
+        { name: "Jazz", color: "from-amber-500 to-yellow-600", icon: IoDisc },
+        { name: "Hip Hop", color: "from-purple-600 to-violet-600", icon: IoRadio },
+        { name: "Classical", color: "from-emerald-500 to-teal-600", icon: IoDisc },
+        { name: "Chill", color: "from-sky-400 to-indigo-500", icon: IoHeadset },
+        { name: "Ambient", color: "from-slate-500 to-zinc-600", icon: IoMusicalNotes },
+        { name: "Metal", color: "from-gray-700 to-zinc-900", icon: IoRadio },
+        { name: "Country", color: "from-amber-600 to-orange-700", icon: IoMusicalNotes },
+        { name: "Blues", color: "from-blue-700 to-indigo-900", icon: IoDisc },
+        { name: "Folk", color: "from-orange-400 to-amber-600", icon: IoMusicalNotes },
+        { name: "Latin", color: "from-red-500 to-pink-500", icon: IoRadio },
+        { name: "Soul", color: "from-purple-500 to-pink-600", icon: IoDisc },
+        { name: "Reggae", color: "from-green-500 to-yellow-500", icon: IoHeadset },
+        { name: "Indie", color: "from-teal-500 to-emerald-600", icon: IoMusicalNotes },
     ];
 
     return (
@@ -177,20 +184,46 @@ export default function SearchPage() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                         >
-                            <h2 className="text-xl font-bold mb-4">Browse all</h2>
+                            <div className="mb-5 flex items-end justify-between gap-4">
+                                <div>
+                                    <h2 className="text-xl font-bold">Browse all</h2>
+                                    <p className="mt-1 text-sm text-muted-foreground">
+                                        Find a sound for every mood
+                                    </p>
+                                </div>
+                                <span className="hidden text-xs font-medium text-muted-foreground sm:block">
+                                    16 genres
+                                </span>
+                            </div>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
                                 {genres.map((genre) => (
-                                    <motion.div
+                                    <motion.button
                                         key={genre.name}
-                                        whileHover={{ scale: 1.03 }}
-                                        whileTap={{ scale: 0.97 }}
-                                        className={`browse-tile bg-gradient-to-br ${genre.color} rounded-lg p-3 sm:p-4 h-24 sm:h-32 cursor-pointer relative overflow-hidden`}
+                                        type="button"
+                                        whileHover={{ y: -3 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className={`browse-tile bg-gradient-to-br ${genre.color} h-36 sm:h-40 cursor-pointer relative overflow-hidden p-4 text-left sm:p-5`}
                                         onClick={() => navigate(`/genre/${genre.name.toLowerCase()}`)}
                                     >
-                                        <span className="text-base sm:text-lg font-bold text-white">
-                                            {genre.name}
+                                        <genre.icon
+                                            aria-hidden="true"
+                                            className="browse-tile-art absolute -bottom-4 -right-3 h-28 w-28 rotate-[-12deg] text-white/15 sm:h-32 sm:w-32"
+                                        />
+                                        <span className="relative flex h-full flex-col justify-between text-white">
+                                            <span className="flex items-center justify-between">
+                                                <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/25 bg-white/15 backdrop-blur-sm">
+                                                    <genre.icon aria-hidden="true" className="h-5 w-5" />
+                                                </span>
+                                                <IoArrowForwardSharp
+                                                    aria-hidden="true"
+                                                    className="browse-tile-arrow h-5 w-5 -translate-x-1 opacity-0 transition-all"
+                                                />
+                                            </span>
+                                            <span className="relative text-lg font-bold tracking-tight sm:text-xl">
+                                                {genre.name}
+                                            </span>
                                         </span>
-                                    </motion.div>
+                                    </motion.button>
                                 ))}
                             </div>
                         </motion.div>
