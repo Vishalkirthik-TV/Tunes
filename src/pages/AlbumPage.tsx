@@ -46,11 +46,7 @@ export default function AlbumPage() {
                     getAlbumTracks(albumId!),
                 ]);
                 setAlbum(albumData);
-                // Album tracks endpoint returns nested, flatten if needed
-                const flatTracks = albumTracks.flatMap((item: any) =>
-                    item.tracks ? item.tracks : [item]
-                );
-                setTracks(flatTracks);
+                setTracks(albumTracks);
             } catch (error) {
                 console.error("Failed to fetch album:", error);
             } finally {

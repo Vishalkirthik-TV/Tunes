@@ -48,6 +48,8 @@ export default function GenrePage() {
     const { genreName } = useParams<{ genreName: string }>();
     const [tracks, setTracks] = useState<JamendoTrack[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState(false);
+    const [retryCount, setRetryCount] = useState(0);
     const { playTrackFromQueue } = usePlayerStore();
 
     const displayName = genreName
@@ -55,22 +57,34 @@ export default function GenrePage() {
         : "";
 
     useEffect(() => {
-        if (!genreName) return;
+        const tag = genreName;
+        if (!tag) return;
+        const controller = new AbortController();
 
-        async function fetchData() {
+        async function fetchData(currentTag: string) {
             setLoading(true);
+            setLoadError(false);
+            setTracks([]);
             try {
-                const data = await getTracksByTag(genreName!, 40);
-                setTracks(data);
+                const data = await getTracksByTag(currentTag, 40, controller.signal);
+                if (!controller.signal.aborted) {
+                    setTracks(data);
+                }
+                console.log(data);
             } catch (error) {
+                if (controller.signal.aborted) return;
                 console.error("Failed to fetch genre tracks:", error);
+                setLoadError(true);
             } finally {
-                setLoading(false);
+                if (!controller.signal.aborted) {
+                    setLoading(false);
+                }
             }
         }
 
-        fetchData();
-    }, [genreName]);
+        fetchData(tag);
+        return () => controller.abort();
+    }, [genreName, retryCount]);
 
     const handlePlayAll = () => {
         if (tracks.length > 0) {
@@ -134,11 +148,24 @@ export default function GenrePage() {
                             </div>
                         ))}
                     </div>
+                ) : loadError ? (
+                    <div className="text-center py-20">
+                        <p className="text-xl font-semibold mb-2">Couldn't load tracks</p>
+                        <p className="text-muted-foreground mb-4">
+                            We couldn't load {displayName} tracks right now. Please try again.
+                        </p>
+                        <Button
+                            variant="outline"
+                            onClick={() => setRetryCount((count) => count + 1)}
+                        >
+                            Try again
+                        </Button>
+                    </div>
                 ) : tracks.length === 0 ? (
                     <div className="text-center py-20">
                         <p className="text-xl font-semibold mb-2">No tracks found</p>
                         <p className="text-muted-foreground">
-                            We couldn't find any {displayName} tracks right now
+                            We couldn't find any <span className="font-bold">{displayName} </span>tracks right now
                         </p>
                     </div>
                 ) : (

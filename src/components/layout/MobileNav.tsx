@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { GoHome, GoHomeFill } from "react-icons/go";
 import { IoSearch, IoSearchOutline } from "react-icons/io5";
 import { BiLibrary, BiSolidBookContent } from "react-icons/bi";
+import { cn } from "@/lib/utils";
 
 const navItems = [
     { label: "Home", path: "/", icon: GoHomeFill, inactiveIcon: GoHome },
@@ -30,8 +31,8 @@ export default function MobileNav() {
                         key={item.path}
                         onClick={() => navigate(item.path)}
                         aria-current={isActive ? "page" : undefined}
-                        className={`flex flex-col items-center gap-1 text-[10px] font-semibold transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"
-                            }`}
+                        className={cn("flex flex-col items-center gap-1 text-[10px] font-semibold transition-colors", isActive ? "text-foreground" : "text-muted-foreground"
+                        )}
                     >
                         <Icon className="w-6 h-6" />
                         {item.label}

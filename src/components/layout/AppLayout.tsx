@@ -12,7 +12,7 @@ export default function AppLayout() {
     return (
         <div className="app-shell h-screen flex flex-col overflow-hidden bg-background">
             {/* ── Main Area: Sidebar + Content ─────────────── */}
-            <div className="flex flex-1 overflow-hidden">
+            <div className="flex flex-1 overflow-hidden gap-3">
                 <Sidebar />
 
                 {/* ── Main Content ────────────────────────────── */}

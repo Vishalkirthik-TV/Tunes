@@ -13,6 +13,7 @@ import { GoHome, GoHomeFill } from "react-icons/go";
 import { IoSearch, IoSearchOutline, IoHeart, IoAdd } from "react-icons/io5";
 import { BiLibrary } from "react-icons/bi";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const navItems = [
     {
@@ -63,10 +64,10 @@ export default function Sidebar() {
                             <motion.div key={item.path} whileHover={{ x: 4 }} transition={{ duration: 0.15 }}>
                                 <Button
                                     variant="ghost"
-                                    className={`w-full justify-start gap-4 text-base font-semibold h-12 px-3 ${isActive
+                                    className={cn("w-full justify-start gap-4 text-base font-semibold h-12 px-3", isActive
                                         ? "text-foreground"
                                         : "text-muted-foreground hover:text-foreground"
-                                        }`}
+                                    )}
                                     onClick={() => navigate(item.path)}
                                 >
                                     <Icon className="w-6 h-6" />
@@ -86,8 +87,8 @@ export default function Sidebar() {
                     onClick={() => navigate("/library")}
                 >
                     <div className={`flex items-center gap-3 transition-colors ${location.pathname === "/library"
-                            ? "text-foreground"
-                            : "text-muted-foreground group-hover:text-foreground"
+                        ? "text-foreground"
+                        : "text-muted-foreground group-hover:text-foreground"
                         }`}>
                         <BiLibrary className="w-6 h-6" />
                         <span className="font-semibold">Your Library</span>
