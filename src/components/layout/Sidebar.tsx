@@ -80,7 +80,7 @@ export default function Sidebar() {
             </div>
 
             {/* ── Library Card ──────────────────────────────── */}
-            <div className="bg-card rounded-lg p-4 flex-1 overflow-hidden flex flex-col">
+            <div className="bg-card rounded-lg p-4 flex-1 overflow-auto flex flex-col">
                 {/* Library Header */}
                 <div
                     className="flex items-center justify-between mb-4 cursor-pointer group"

@@ -22,7 +22,7 @@ export default function TopBar({ className = "" }: TopBarProps) {
             <button
                 type="button"
                 className="tunes-topbar-brand cursor-pointer md:hidden"
-                onClick={() => navigate("/listen")}
+                onClick={() => navigate("/")}
                 aria-label="Tunes home"
             >
                 <TunesLogo />

@@ -21,7 +21,7 @@ import {
     IoRepeatSharp,
     IoCloseSharp,
 } from "react-icons/io5";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import LikeButton from "@/components/LikeButton";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
@@ -30,6 +30,36 @@ function formatTime(seconds: number): string {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
+function EmptyPlayerPrompt() {
+    const prompt = "Pick a track to start listening";
+    const reduceMotion = useReducedMotion();
+
+    return (
+        <p className="m-0 text-sm font-medium tracking-wide text-[#c3aaa0]" role="status" aria-label={prompt}>
+            <span aria-hidden="true">
+                {prompt.split("").map((character, index) => (
+                    <motion.span
+                        key={`${character}-${index}`}
+                        initial={{ opacity: reduceMotion ? 1 : 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.12, delay: reduceMotion ? 0 : index * 0.045 }}
+                    >
+                        {character === " " ? "\u00a0" : character}
+                    </motion.span>
+                ))}
+                {!reduceMotion && (
+                    <motion.span
+                        className="ml-0.5 inline-block h-[1em] w-px translate-y-[0.12em] bg-[#ff744c]"
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                )}
+            </span>
+            <span className="sr-only">{prompt}</span>
+        </p>
+    );
 }
 
 export default function MusicPlayer() {
@@ -119,7 +149,21 @@ export default function MusicPlayer() {
 
     // ── Empty state ──────────────────────────────────────
     if (!currentTrack) {
-        return null;
+        if (location.pathname !== "/listen") return null;
+
+        return (
+            <>
+                <footer className="music-player hidden items-center justify-center md:flex" aria-label="Music player">
+                    <EmptyPlayerPrompt />
+                </footer>
+                <footer
+                    className="mobile-player items-center justify-center md:hidden"
+                    aria-label="Music player"
+                >
+                    <EmptyPlayerPrompt />
+                </footer>
+            </>
+        );
     }
 
     return (

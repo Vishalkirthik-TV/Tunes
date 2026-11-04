@@ -53,7 +53,7 @@ export default function LandingPage() {
     const [tracksLoading, setTracksLoading] = useState(true);
     const [tracksError, setTracksError] = useState(false);
     const [trendingAttempt, setTrendingAttempt] = useState(0);
-    const { currentTrack, playTrackFromQueue } = usePlayerStore();
+    const { playTrackFromQueue } = usePlayerStore();
     const slide = slides[activeSlide];
 
     useEffect(() => {
@@ -153,7 +153,7 @@ export default function LandingPage() {
     };
 
     return (
-        <main className={`min-h-screen overflow-hidden bg-[#11110f] font-sans text-[#f3f0e9]${currentTrack ? " pb-32" : ""}`}>
+        <main className="min-h-screen overflow-hidden bg-[#11110f] pb-32 font-sans text-[#f3f0e9]">
             <header className="mx-auto flex min-h-[88px] w-[calc(100%-64px)] max-w-[1240px] items-center justify-between max-[760px]:min-h-[70px] max-[760px]:w-[min(100%-36px,600px)] max-[390px]:w-[min(100%-28px,600px)]">
                 <button className="inline-flex cursor-pointer items-center border-0 bg-transparent p-0 text-inherit [&_.tunes-logo]:text-[#f3f0e9] [&_.tunes-logo-mark]:h-[2.2rem] [&_.tunes-logo-mark]:w-[2.2rem] [&_.tunes-logo-word]:text-[0.95rem] max-[390px]:[&_.tunes-logo]:gap-2 max-[390px]:[&_.tunes-logo-mark]:h-[1.9rem] max-[390px]:[&_.tunes-logo-mark]:w-[1.9rem] max-[390px]:[&_.tunes-logo-word]:text-[0.8rem]" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Tunes home">
                     <TunesLogo />
