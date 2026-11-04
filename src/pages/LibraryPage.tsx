@@ -185,7 +185,7 @@ export default function LibraryPage() {
                                     </p>
                                     <Button
                                         className="rounded-full bg-foreground text-background hover:scale-105 transition-transform font-semibold"
-                                        onClick={() => navigate("/")}
+                                        onClick={() => navigate("/listen")}
                                     >
                                         Browse music
                                     </Button>

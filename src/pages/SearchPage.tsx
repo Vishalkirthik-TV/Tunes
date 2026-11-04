@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { searchTracks } from "@/services/jamendo";
 import type { JamendoTrack } from "@/services/jamendo";
 import TrackCard from "@/components/TrackCard";
@@ -25,10 +25,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function SearchPage() {
     const navigate = useNavigate();
-    const [query, setQuery] = useState("");
+    const [searchParams] = useSearchParams();
+    const initialQuery = searchParams.get("q") ?? "";
+    const [query, setQuery] = useState(initialQuery);
     const [results, setResults] = useState<JamendoTrack[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [hasSearched, setHasSearched] = useState(false);
+    const [loading, setLoading] = useState(Boolean(initialQuery.trim()));
+    const [hasSearched, setHasSearched] = useState(Boolean(initialQuery.trim()));
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -58,6 +60,27 @@ export default function SearchPage() {
             setLoading(false);
         }
     }, []);
+
+    useEffect(() => {
+        if (!initialQuery.trim()) return;
+
+        let cancelled = false;
+        searchTracks(initialQuery, 30)
+            .then((tracks) => {
+                if (!cancelled) setResults(tracks);
+            })
+            .catch((error: unknown) => {
+                console.error("Search failed:", error);
+                if (!cancelled) setResults([]);
+            })
+            .finally(() => {
+                if (!cancelled) setLoading(false);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [initialQuery]);
 
     const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;

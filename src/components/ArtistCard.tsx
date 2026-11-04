@@ -43,7 +43,7 @@ export default function ArtistCard({ artist }: ArtistCardProps) {
                                 onError={() => setFailedImage(artist.image)}
                             />
                         ) : (
-                            <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-800 to-slate-950">
+                            <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-orange-500 via-red-800 to-slate-950">
                                 <IoMusicalNotes
                                     aria-hidden="true"
                                     className="absolute -right-3 -top-3 h-28 w-28 rotate-12 text-white/10"

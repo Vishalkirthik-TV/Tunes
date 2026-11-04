@@ -11,7 +11,7 @@ import { BiLibrary, BiSolidBookContent } from "react-icons/bi";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-    { label: "Home", path: "/", icon: GoHomeFill, inactiveIcon: GoHome },
+    { label: "Home", path: "/listen", icon: GoHomeFill, inactiveIcon: GoHome },
     { label: "Search", path: "/search", icon: IoSearch, inactiveIcon: IoSearchOutline },
     { label: "Library", path: "/library", icon: BiSolidBookContent, inactiveIcon: BiLibrary },
 ];

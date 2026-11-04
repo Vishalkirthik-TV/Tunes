@@ -80,6 +80,7 @@ export default function HomePage() {
                 setPopularTracks(popular);
                 setChillTracks(chill);
                 setElectronicTracks(electronic);
+                console.log(electronic)
                 setPopularArtists(artists);
                 setPopularAlbums(albums);
             } catch (error) {

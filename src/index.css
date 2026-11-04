@@ -52,69 +52,69 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --radius: 1rem;
-  --background: #f3f5f3;
-  --foreground: #17231f;
-  --card: #ffffff;
-  --card-foreground: #17231f;
-  --popover: #ffffff;
-  --popover-foreground: #17231f;
-  --primary: #087f63;
+  --background: #f5f2ee;
+  --foreground: #241a16;
+  --card: #fffdfa;
+  --card-foreground: #241a16;
+  --popover: #fffdfa;
+  --popover-foreground: #241a16;
+  --primary: #e85a32;
   --primary-foreground: #ffffff;
-  --secondary: #e8eeea;
-  --secondary-foreground: #263a33;
-  --muted: #e9eeeb;
-  --muted-foreground: #75817b;
-  --accent: #e4eee9;
-  --accent-foreground: #12644f;
+  --secondary: #eee8e2;
+  --secondary-foreground: #3a2b24;
+  --muted: #eee9e4;
+  --muted-foreground: #81736c;
+  --accent: #f9e8df;
+  --accent-foreground: #a63e20;
   --destructive: #cf3e43;
-  --border: rgba(32, 54, 45, 0.09);
-  --input: rgba(32, 54, 45, 0.1);
-  --ring: #5da991;
-  --chart-1: #087f63;
-  --chart-2: #78ae76;
-  --chart-3: #d3a354;
-  --chart-4: #83a8bc;
-  --chart-5: #ba8b9b;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #53625a;
-  --sidebar-primary: #087f63;
+  --border: rgba(65, 42, 31, 0.1);
+  --input: rgba(65, 42, 31, 0.12);
+  --ring: #e8754f;
+  --chart-1: #e85a32;
+  --chart-2: #ef9b55;
+  --chart-3: #bc472d;
+  --chart-4: #d68a74;
+  --chart-5: #8c5947;
+  --sidebar: #fffdfa;
+  --sidebar-foreground: #65564f;
+  --sidebar-primary: #e85a32;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #edf4f0;
-  --sidebar-border: rgba(32, 54, 45, 0.08);
-  --sidebar-ring: #5da991;
-  --tunes: #087f63;
+  --sidebar-accent: #f9e8df;
+  --sidebar-border: rgba(65, 42, 31, 0.09);
+  --sidebar-ring: #e8754f;
+  --tunes: #e85a32;
   --tunes-foreground: #ffffff;
   color-scheme: light;
 }
 
 .dark {
-  --background: #101714;
-  --foreground: #f2f6f3;
-  --card: #18211d;
-  --card-foreground: #f2f6f3;
-  --popover: #1c2722;
-  --popover-foreground: #f2f6f3;
-  --primary: #72d6ae;
-  --primary-foreground: #10251c;
-  --secondary: #26332c;
-  --secondary-foreground: #e5eee9;
-  --muted: #26332c;
-  --muted-foreground: #a0afa7;
-  --accent: #25372e;
-  --accent-foreground: #b6efd6;
+  --background: #171412;
+  --foreground: #f5eee9;
+  --card: #211b18;
+  --card-foreground: #f5eee9;
+  --popover: #261e1a;
+  --popover-foreground: #f5eee9;
+  --primary: #ff744c;
+  --primary-foreground: #24130e;
+  --secondary: #30241f;
+  --secondary-foreground: #f2e5dc;
+  --muted: #30241f;
+  --muted-foreground: #b6a49a;
+  --accent: #3c261e;
+  --accent-foreground: #ffb092;
   --destructive: #e45358;
-  --border: rgba(230, 245, 236, 0.1);
-  --input: rgba(230, 245, 236, 0.12);
-  --ring: #72d6ae;
-  --sidebar: #151d19;
-  --sidebar-foreground: #c1cdc6;
-  --sidebar-primary: #72d6ae;
-  --sidebar-primary-foreground: #10251c;
-  --sidebar-accent: #25332b;
-  --sidebar-border: rgba(230, 245, 236, 0.09);
-  --sidebar-ring: #72d6ae;
-  --tunes: #72d6ae;
-  --tunes-foreground: #10251c;
+  --border: rgba(250, 231, 219, 0.1);
+  --input: rgba(250, 231, 219, 0.12);
+  --ring: #ff744c;
+  --sidebar: #1d1714;
+  --sidebar-foreground: #d1beb3;
+  --sidebar-primary: #ff744c;
+  --sidebar-primary-foreground: #24130e;
+  --sidebar-accent: #33221b;
+  --sidebar-border: rgba(250, 231, 219, 0.09);
+  --sidebar-ring: #ff744c;
+  --tunes: #ff744c;
+  --tunes-foreground: #24130e;
   color-scheme: dark;
 }
 
@@ -178,9 +178,34 @@
   }
 }
 
+.tunes-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--foreground);
+}
+
+.tunes-logo-mark {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+}
+
+.tunes-logo-word {
+  font-size: 1.12rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  line-height: 1;
+}
+
+.tunes-logo-word > span {
+  color: var(--primary);
+}
+
 .app-shell {
   background:
-    radial-gradient(ellipse at 82% -15%, rgba(181, 220, 199, 0.22), transparent 38%),
+    radial-gradient(ellipse at 82% -15%, rgba(232, 90, 50, 0.1), transparent 38%),
     var(--background);
 }
 
@@ -195,7 +220,7 @@
   border: 1px solid var(--border);
   border-radius: 1.25rem;
   background: color-mix(in srgb, var(--card) 92%, transparent);
-  box-shadow: 0 8px 26px rgba(27, 49, 39, 0.035);
+  box-shadow: 0 8px 26px rgba(65, 42, 31, 0.035);
 }
 
 .app-sidebar > div:first-child {
@@ -238,7 +263,7 @@
   border: 1px solid var(--border);
   border-radius: 1.35rem;
   background: color-mix(in srgb, var(--card) 82%, var(--background));
-  box-shadow: 0 10px 34px rgba(27, 49, 39, 0.045);
+  box-shadow: 0 10px 34px rgba(65, 42, 31, 0.045);
   scrollbar-gutter: stable;
 }
 
@@ -260,6 +285,19 @@
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--card) 72%, transparent);
   color: var(--foreground);
+}
+
+.app-topbar .tunes-topbar-brand {
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.app-topbar .tunes-topbar-brand:hover {
+  background: transparent;
 }
 
 .app-topbar button:hover {
@@ -369,7 +407,7 @@
   font-size: 0.78rem;
 }
 
-.music-card button {
+.music-card button[data-size="icon"] {
   box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
@@ -959,7 +997,7 @@
     border-radius: 0.7rem;
   }
 
-  .music-card button {
+  .music-card button[data-size="icon"] {
     width: 2.65rem;
     height: 2.65rem;
     opacity: 1;

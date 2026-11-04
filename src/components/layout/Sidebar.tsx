@@ -14,11 +14,12 @@ import { IoSearch, IoSearchOutline, IoHeart, IoAdd } from "react-icons/io5";
 import { BiLibrary } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import TunesLogo from "@/components/TunesLogo";
 
 const navItems = [
     {
         label: "Home",
-        path: "/",
+        path: "/listen",
         icon: GoHomeFill,
         inactiveIcon: GoHome,
     },
@@ -42,17 +43,16 @@ export default function Sidebar() {
             {/* ── Top Nav Card ──────────────────────────────── */}
             <div className="bg-card rounded-lg p-4">
                 {/* Logo */}
-                <motion.div
-                    className="flex items-center gap-2 mb-6 px-2 cursor-pointer"
+                <motion.button
+                    type="button"
+                    className="mb-6 flex w-full items-center border-0 bg-transparent px-2 text-left cursor-pointer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/listen")}
+                    aria-label="Tunes home"
                 >
-                    <div className="w-8 h-8 bg-tunes rounded-full flex items-center justify-center">
-                        <span className="text-tunes-foreground font-bold text-sm">T</span>
-                    </div>
-                    <span className="text-xl font-bold tracking-tight">Tunes</span>
-                </motion.div>
+                    <TunesLogo />
+                </motion.button>
 
                 {/* Nav Items */}
                 <nav className="flex flex-col gap-1">
@@ -111,7 +111,7 @@ export default function Sidebar() {
                                     }`}
                                 onClick={() => navigate("/liked")}
                             >
-                                <div className="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-600 to-purple-400 flex items-center justify-center flex-shrink-0">
+                                <div className="w-10 h-10 rounded-md bg-gradient-to-br from-orange-500 to-rose-700 flex items-center justify-center flex-shrink-0">
                                     <IoHeart className="w-4 h-4 text-white" />
                                 </div>
                                 <div className="text-left min-w-0">

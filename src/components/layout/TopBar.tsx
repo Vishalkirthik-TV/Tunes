@@ -7,6 +7,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import TunesLogo from "@/components/TunesLogo";
 
 export default function TopBar() {
     const navigate = useNavigate();
@@ -14,15 +15,14 @@ export default function TopBar() {
     return (
         <header className="app-topbar sticky top-0 z-10 flex items-center gap-3">
             {/* Tunes logo — mobile only */}
-            <div
-                className="flex items-center gap-2 cursor-pointer md:hidden"
-                onClick={() => navigate("/")}
+            <button
+                type="button"
+                className="tunes-topbar-brand cursor-pointer md:hidden"
+                onClick={() => navigate("/listen")}
+                aria-label="Tunes home"
             >
-                <div className="w-7 h-7 bg-tunes rounded-full flex items-center justify-center">
-                    <span className="text-tunes-foreground font-bold text-xs">T</span>
-                </div>
-                <span className="text-lg font-bold tracking-tight">Tunes</span>
-            </div>
+                <TunesLogo />
+            </button>
 
             {/* Navigation buttons */}
             <div className="flex items-center gap-2 ml-auto md:ml-0">

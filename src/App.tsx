@@ -5,6 +5,7 @@
 
 import { Routes, Route } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
+import LandingPage from "@/pages/LandingPage";
 import HomePage from "@/pages/HomePage";
 import SearchPage from "@/pages/SearchPage";
 import ArtistPage from "@/pages/ArtistPage";
@@ -17,8 +18,9 @@ import LikedSongsPage from "@/pages/LikedSongsPage";
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
       <Route element={<AppLayout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/listen" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/artist/:artistId" element={<ArtistPage />} />
         <Route path="/album/:albumId" element={<AlbumPage />} />

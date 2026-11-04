@@ -102,26 +102,30 @@ async function fetchJamendo<T>(
 // ─── Track API Functions ───────────────────────────────────────────
 
 /** Fetch popular/trending tracks */
-export async function getPopularTracks(limit = 20): Promise<JamendoTrack[]> {
+export async function getPopularTracks(
+  limit = 20,
+  signal?: AbortSignal,
+): Promise<JamendoTrack[]> {
   return fetchJamendo<JamendoTrack>("tracks", {
     order: "popularity_month",
     limit: String(limit),
     imagesize: "400",
     include: "musicinfo",
-  });
+  }, signal);
 }
 
 /** Search tracks by name */
 export async function searchTracks(
   query: string,
   limit = 20,
+  signal?: AbortSignal,
 ): Promise<JamendoTrack[]> {
   if (!query.trim()) return [];
   return fetchJamendo<JamendoTrack>("tracks", {
     search: query,
     limit: String(limit),
     imagesize: "400",
-  });
+  }, signal);
 }
 
 /** Fetch tracks by a specific artist */
