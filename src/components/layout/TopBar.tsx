@@ -9,11 +9,15 @@ import { Button } from "@/components/ui/button";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import TunesLogo from "@/components/TunesLogo";
 
-export default function TopBar() {
+interface TopBarProps {
+    className?: string;
+}
+
+export default function TopBar({ className = "" }: TopBarProps) {
     const navigate = useNavigate();
 
     return (
-        <header className="app-topbar sticky top-0 z-10 flex items-center gap-3">
+        <header className={`app-topbar sticky top-0 z-10 flex items-center gap-3 ${className}`}>
             {/* Tunes logo — mobile only */}
             <button
                 type="button"

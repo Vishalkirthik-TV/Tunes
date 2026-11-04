@@ -5,6 +5,7 @@
 
 import { Routes, Route } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
+import MusicPlayer from "@/components/player/MusicPlayer";
 import LandingPage from "@/pages/LandingPage";
 import HomePage from "@/pages/HomePage";
 import SearchPage from "@/pages/SearchPage";
@@ -17,18 +18,21 @@ import LikedSongsPage from "@/pages/LikedSongsPage";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route element={<AppLayout />}>
-        <Route path="/listen" element={<HomePage />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/artist/:artistId" element={<ArtistPage />} />
-        <Route path="/album/:albumId" element={<AlbumPage />} />
-        <Route path="/genre/:genreName" element={<GenrePage />} />
-        <Route path="/playlist/:playlistId" element={<PlaylistPage />} />
-        <Route path="/library" element={<LibraryPage />} />
-        <Route path="/liked" element={<LikedSongsPage />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route element={<AppLayout />}>
+          <Route path="/listen" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/artist/:artistId" element={<ArtistPage />} />
+          <Route path="/album/:albumId" element={<AlbumPage />} />
+          <Route path="/genre/:genreName" element={<GenrePage />} />
+          <Route path="/playlist/:playlistId" element={<PlaylistPage />} />
+          <Route path="/library" element={<LibraryPage />} />
+          <Route path="/liked" element={<LikedSongsPage />} />
+        </Route>
+      </Routes>
+      <MusicPlayer />
+    </>
   );
 }

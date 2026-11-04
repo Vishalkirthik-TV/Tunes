@@ -5,7 +5,6 @@
 
 import { Outlet } from "react-router-dom";
 import Sidebar from "@/components/layout/Sidebar";
-import MusicPlayer from "@/components/player/MusicPlayer";
 import MobileNav from "@/components/layout/MobileNav";
 
 export default function AppLayout() {
@@ -20,9 +19,6 @@ export default function AppLayout() {
                     <Outlet />
                 </main>
             </div>
-
-            {/* ── Bottom Player ─────────────────────────────── */}
-            <MusicPlayer />
 
             {/* ── Mobile Navigation ─────────────────────────── */}
             <MobileNav />

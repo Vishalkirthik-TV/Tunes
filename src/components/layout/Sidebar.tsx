@@ -48,7 +48,7 @@ export default function Sidebar() {
                     className="mb-6 flex w-full items-center border-0 bg-transparent px-2 text-left cursor-pointer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate("/listen")}
+                    onClick={() => navigate("/")}
                     aria-label="Tunes home"
                 >
                     <TunesLogo />
