@@ -215,7 +215,7 @@ export default function HomePage() {
                         <HorizontalSkeleton count={6} circular />
                     ) : (
                         <ScrollArea className="w-full">
-                            <div className="flex gap-3 sm:gap-4 pb-4">
+                            <div className="flex gap-3 px-1 pb-4 pt-2 sm:gap-4">
                                 {popularArtists.map((artist) => (
                                     <div key={artist.id} className="w-[140px] sm:w-[180px] flex-shrink-0">
                                         <ArtistCard artist={artist} />
@@ -234,7 +234,7 @@ export default function HomePage() {
                         <HorizontalSkeleton count={6} />
                     ) : (
                         <ScrollArea className="w-full">
-                            <div className="flex gap-3 sm:gap-4 pb-4">
+                            <div className="flex gap-3 px-1 pb-4 pt-2 sm:gap-4">
                                 {popularAlbums.map((album) => (
                                     <div key={album.id} className="w-[140px] sm:w-[180px] flex-shrink-0">
                                         <AlbumCard album={album} />
@@ -253,7 +253,7 @@ export default function HomePage() {
                         <HorizontalSkeleton />
                     ) : (
                         <ScrollArea className="w-full">
-                            <div className="flex gap-3 sm:gap-4 pb-4">
+                            <div className="flex gap-3 px-1 pb-4 pt-2 sm:gap-4">
                                 {chillTracks.map((track) => (
                                     <div key={track.id} className="w-[140px] sm:w-[180px] flex-shrink-0">
                                         <TrackCard track={track} tracks={chillTracks} />
@@ -272,7 +272,7 @@ export default function HomePage() {
                         <HorizontalSkeleton />
                     ) : (
                         <ScrollArea className="w-full">
-                            <div className="flex gap-3 sm:gap-4 pb-4">
+                            <div className="flex gap-3 px-1 pb-4 pt-2 sm:gap-4">
                                 {electronicTracks.map((track) => (
                                     <div key={track.id} className="w-[140px] sm:w-[180px] flex-shrink-0">
                                         <TrackCard track={track} tracks={electronicTracks} />
