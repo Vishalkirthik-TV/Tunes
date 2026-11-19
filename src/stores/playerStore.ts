@@ -13,6 +13,8 @@ interface PlayerState {
     currentTrack: JamendoTrack | null;
     isPlaying: boolean;
     queue: JamendoTrack[];
+    isShuffleEnabled: boolean;
+    isRepeatEnabled: boolean;
     volume: number;
     progress: number;
     duration: number;
@@ -23,6 +25,8 @@ interface PlayerState {
     pause: () => void;
     togglePlay: () => void;
     setQueue: (tracks: JamendoTrack[]) => void;
+    toggleShuffle: () => void;
+    toggleRepeat: () => void;
     playTrackFromQueue: (track: JamendoTrack, queue?: JamendoTrack[]) => void;
     nextTrack: () => void;
     previousTrack: () => void;
@@ -38,6 +42,8 @@ export const usePlayerStore = create<PlayerState>()(
             currentTrack: null,
             isPlaying: false,
             queue: [],
+            isShuffleEnabled: false,
+            isRepeatEnabled: false,
             volume: 0.7,
             progress: 0,
             duration: 0,
@@ -53,6 +59,10 @@ export const usePlayerStore = create<PlayerState>()(
 
             setQueue: (tracks) => set({ queue: tracks }),
 
+            toggleShuffle: () => set((state) => ({ isShuffleEnabled: !state.isShuffleEnabled })),
+
+            toggleRepeat: () => set((state) => ({ isRepeatEnabled: !state.isRepeatEnabled })),
+
             playTrackFromQueue: (track, queue) => {
                 const updates: Partial<PlayerState> = {
                     currentTrack: track,
@@ -64,10 +74,29 @@ export const usePlayerStore = create<PlayerState>()(
             },
 
             nextTrack: () => {
-                const { queue, currentTrack } = get();
+                const { queue, currentTrack, isShuffleEnabled } = get();
                 if (queue.length === 0 || !currentTrack) return;
+
+                if (isShuffleEnabled) {
+                    if (queue.length === 1) {
+                        set({ isPlaying: false });
+                        return;
+                    }
+
+                    const candidates = queue.filter((track) => track.id !== currentTrack.id);
+                    const nextTrack = candidates[Math.floor(Math.random() * candidates.length)];
+                    set({ currentTrack: nextTrack, isPlaying: true, progress: 0 });
+                    return;
+                }
+
                 const currentIndex = queue.findIndex((t) => t.id === currentTrack.id);
-                const nextIndex = (currentIndex + 1) % queue.length;
+                const isLastTrack = currentIndex === queue.length - 1;
+                if (isLastTrack) {
+                    set({ isPlaying: false });
+                    return;
+                }
+
+                const nextIndex = currentIndex < 0 || isLastTrack ? 0 : currentIndex + 1;
                 set({ currentTrack: queue[nextIndex], isPlaying: true, progress: 0 });
             },
 
@@ -91,6 +120,9 @@ export const usePlayerStore = create<PlayerState>()(
                 currentTrack: state.currentTrack,
                 queue: state.queue,
                 volume: state.volume,
+                progress: state.progress,
+                isShuffleEnabled: state.isShuffleEnabled,
+                isRepeatEnabled: state.isRepeatEnabled,
             }),
         },
     ),

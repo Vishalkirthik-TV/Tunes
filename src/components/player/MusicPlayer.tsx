@@ -72,7 +72,11 @@ export default function MusicPlayer() {
         volume,
         progress,
         duration,
+        isShuffleEnabled,
+        isRepeatEnabled,
         togglePlay,
+        toggleShuffle,
+        toggleRepeat,
         nextTrack,
         previousTrack,
         setVolume,
@@ -113,8 +117,17 @@ export default function MusicPlayer() {
 
     const handleLoadedMetadata = useCallback(() => {
         const audio = audioRef.current;
-        if (audio) setDuration(audio.duration);
-    }, [setDuration]);
+        if (!audio) return;
+
+        setDuration(audio.duration);
+
+        // The saved position can only be applied after the browser knows the
+        // stream duration. Leave a small margin so an ended track is not
+        // restored beyond its seekable range.
+        if (progress > 0 && Number.isFinite(audio.duration)) {
+            audio.currentTime = Math.min(progress, Math.max(0, audio.duration - 0.1));
+        }
+    }, [progress, setDuration]);
 
     const handleEnded = useCallback(() => {
         nextTrack();
@@ -172,6 +185,7 @@ export default function MusicPlayer() {
             <audio
                 ref={audioRef}
                 src={currentTrack.audio}
+                loop={isRepeatEnabled}
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}
                 onEnded={handleEnded}
@@ -424,7 +438,16 @@ export default function MusicPlayer() {
                 <div className="flex flex-col items-center gap-1 max-w-[722px] w-full mx-auto">
                     {/* Controls */}
                     <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon" className="w-8 h-8 text-muted-foreground hover:text-foreground">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="player-mode-control w-8 h-8 text-muted-foreground hover:text-foreground"
+                            onClick={toggleShuffle}
+                            aria-pressed={isShuffleEnabled}
+                            data-player-mode-active={isShuffleEnabled}
+                            aria-label={isShuffleEnabled ? "Turn off shuffle" : "Turn on shuffle"}
+                            title={isShuffleEnabled ? "Turn off shuffle" : "Turn on shuffle"}
+                        >
                             <IoShuffleSharp className="w-4 h-4" />
                         </Button>
                         <Button
@@ -455,7 +478,16 @@ export default function MusicPlayer() {
                         >
                             <IoPlaySkipForwardSharp className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="w-8 h-8 text-muted-foreground hover:text-foreground">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="player-mode-control w-8 h-8 text-muted-foreground hover:text-foreground"
+                            onClick={toggleRepeat}
+                            aria-pressed={isRepeatEnabled}
+                            data-player-mode-active={isRepeatEnabled}
+                            aria-label={isRepeatEnabled ? "Turn off repeat track" : "Turn on repeat track"}
+                            title={isRepeatEnabled ? "Turn off repeat track" : "Turn on repeat track"}
+                        >
                             <IoRepeatSharp className="w-4 h-4" />
                         </Button>
                     </div>

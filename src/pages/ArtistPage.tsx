@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { IoPlaySharp, IoShuffleSharp } from "react-icons/io5";
+import { IoCheckmarkSharp, IoPersonAddSharp, IoPlaySharp, IoShuffleSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 export default function ArtistPage() {
@@ -27,7 +27,8 @@ export default function ArtistPage() {
     const [albums, setAlbums] = useState<JamendoAlbum[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAllTracks, setShowAllTracks] = useState(false);
-    const { playTrackFromQueue } = usePlayerStore();
+    const [isShuffleActive, setIsShuffleActive] = useState(false);
+    const { playTrackFromQueue, setQueue } = usePlayerStore();
     const { toggleFollowArtist, isArtistFollowed } = useLibraryStore();
 
     useEffect(() => {
@@ -36,6 +37,7 @@ export default function ArtistPage() {
         async function fetchData() {
             setLoading(true);
             setShowAllTracks(false);
+            setIsShuffleActive(false);
             try {
                 const [artistData, artistTracks, artistAlbums] = await Promise.all([
                     getArtist(artistId!),
@@ -57,15 +59,23 @@ export default function ArtistPage() {
 
     const handlePlayAll = () => {
         if (tracks.length > 0) {
+            setIsShuffleActive(false);
             playTrackFromQueue(tracks[0], tracks);
         }
     };
 
     const handleShuffle = () => {
-        if (tracks.length > 0) {
-            const shuffled = [...tracks].sort(() => Math.random() - 0.5);
-            playTrackFromQueue(shuffled[0], shuffled);
+        if (tracks.length === 0) return;
+
+        if (isShuffleActive) {
+            setQueue(tracks);
+            setIsShuffleActive(false);
+            return;
         }
+
+        const shuffled = [...tracks].sort(() => Math.random() - 0.5);
+        setIsShuffleActive(true);
+        playTrackFromQueue(shuffled[0], shuffled);
     };
 
     const followed = artist ? isArtistFollowed(artist.id) : false;
@@ -164,18 +174,25 @@ export default function ArtistPage() {
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="w-12 h-12 text-muted-foreground hover:text-foreground"
+                    className="w-12 h-12 text-muted-foreground transition-all duration-200"
                     onClick={handleShuffle}
+                    aria-pressed={isShuffleActive}
+                    data-shuffle-active={isShuffleActive}
+                    aria-label={isShuffleActive ? "Turn off shuffle" : "Shuffle artist tracks"}
+                    title={isShuffleActive ? "Turn off shuffle" : "Shuffle artist tracks"}
                 >
                     <IoShuffleSharp className="w-6 h-6" />
                 </Button>
                 <Button
-                    variant="outline"
+                    variant={followed ? "secondary" : "default"}
                     size="sm"
-                    className={`rounded-full text-xs font-semibold px-6 h-8 ${followed
-                        ? "border-tunes text-tunes hover:bg-tunes/10"
-                        : "border-muted-foreground/50 text-foreground hover:border-foreground"
+                    className={`h-9 rounded-xl px-4 text-sm font-semibold shadow-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-tunes/40 ${followed
+                        ? "border border-tunes/25 bg-tunes/10 text-tunes hover:bg-tunes/20 hover:border-tunes/40"
+                        : "bg-tunes text-tunes-foreground hover:bg-tunes/90 hover:shadow-md active:scale-[0.97]"
                         }`}
+                    aria-pressed={followed}
+                    aria-label={followed ? `Unfollow ${artist.name}` : `Follow ${artist.name}`}
+                    title={followed ? "Click to unfollow" : "Follow artist"}
                     onClick={() => {
                         toggleFollowArtist({
                             id: artist.id,
@@ -184,6 +201,7 @@ export default function ArtistPage() {
                         });
                     }}
                 >
+                    {followed ? <IoCheckmarkSharp aria-hidden="true" /> : <IoPersonAddSharp aria-hidden="true" />}
                     {followed ? "Following" : "Follow"}
                 </Button>
             </div>

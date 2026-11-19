@@ -106,31 +106,16 @@ export default function LibraryPage() {
                         {hasVisibleItems ? (
                             <div className="space-y-8">
                                 {showLikedSongs && likedSongs.length > 0 && (
-                                    <article className="group relative min-h-40 max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-tunes/25 via-card to-card shadow-xl">
-                                        <div className="absolute -right-8 -top-10 h-48 w-48 rounded-full bg-tunes/15 blur-3xl" aria-hidden="true" />
+                                    <article className="liked-songs-card group relative min-h-40 max-w-2xl overflow-hidden rounded-2xl border border-white/10 shadow-xl">
+                                        <div className="absolute -right-8 -top-10 h-48 w-48 rounded-full bg-tunes/20 blur-3xl" aria-hidden="true" />
                                         <div className="relative flex min-h-40 items-center gap-4 p-4 sm:gap-6 sm:p-5">
                                             <button
                                                 type="button"
-                                                className="relative grid h-24 w-24 shrink-0 cursor-pointer place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-tunes via-rose-700 to-violet-900 text-white shadow-xl transition-transform duration-300 group-hover:scale-105 sm:h-28 sm:w-28"
+                                                className="liked-songs-cover relative grid h-24 w-24 shrink-0 cursor-pointer place-items-center overflow-hidden rounded-xl text-white transition-transform duration-300 group-hover:scale-105 sm:h-28 sm:w-28"
                                                 onClick={() => navigate("/liked")}
                                                 aria-label="Open Liked Songs"
                                             >
-                                                {likedSongs.length > 0 ? (
-                                                    <div className="grid h-full w-full grid-cols-2 grid-rows-2">
-                                                        {likedSongs.slice(0, 4).map((track) => (
-                                                            track.image
-                                                                ? <img key={track.id} className="h-full w-full object-cover" src={track.image} alt="" />
-                                                                : <div key={track.id} className="grid h-full w-full place-items-center bg-tunes/40"><IoMusicalNotes className="h-5 w-5 text-white/80" /></div>
-                                                        ))}
-                                                        {likedSongs.length < 4 && (
-                                                            <div className="absolute inset-0 grid place-items-center bg-black/35">
-                                                                <IoHeart className="h-9 w-9 drop-shadow-lg" />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                ) : (
-                                                    <IoHeart className="h-10 w-10 drop-shadow-md" />
-                                                )}
+                                                <IoHeart className="h-10 w-10 drop-shadow-md" aria-hidden="true" />
                                             </button>
                                             <button type="button" className="relative z-10 min-w-0 flex-1 cursor-pointer text-left" onClick={() => navigate("/liked")}>
                                                 <span className="mb-2 inline-flex items-center gap-1.5 text-xs font-extrabold tracking-widest text-tunes">

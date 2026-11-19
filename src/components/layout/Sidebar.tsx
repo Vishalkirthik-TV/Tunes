@@ -111,7 +111,7 @@ export default function Sidebar() {
                                     }`}
                                 onClick={() => navigate("/liked")}
                             >
-                                <div className="w-10 h-10 rounded-md bg-gradient-to-br from-orange-500 to-rose-700 flex items-center justify-center flex-shrink-0">
+                                <div className="liked-songs-cover w-10 h-10 rounded-md flex items-center justify-center flex-shrink-0">
                                     <IoHeart className="w-4 h-4 text-white" />
                                 </div>
                                 <div className="text-left min-w-0">

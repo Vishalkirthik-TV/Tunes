@@ -32,7 +32,8 @@ export default function AlbumPage() {
     const [album, setAlbum] = useState<JamendoAlbum | null>(null);
     const [tracks, setTracks] = useState<JamendoTrack[]>([]);
     const [loading, setLoading] = useState(true);
-    const { playTrackFromQueue } = usePlayerStore();
+    const [isShuffleActive, setIsShuffleActive] = useState(false);
+    const { playTrackFromQueue, setQueue } = usePlayerStore();
     const { toggleSaveAlbum, isAlbumSaved } = useLibraryStore();
 
     useEffect(() => {
@@ -40,6 +41,7 @@ export default function AlbumPage() {
 
         async function fetchData() {
             setLoading(true);
+            setIsShuffleActive(false);
             try {
                 const [albumData, albumTracks] = await Promise.all([
                     getAlbum(albumId!),
@@ -59,15 +61,23 @@ export default function AlbumPage() {
 
     const handlePlayAll = () => {
         if (tracks.length > 0) {
+            setIsShuffleActive(false);
             playTrackFromQueue(tracks[0], tracks);
         }
     };
 
     const handleShuffle = () => {
-        if (tracks.length > 0) {
-            const shuffled = [...tracks].sort(() => Math.random() - 0.5);
-            playTrackFromQueue(shuffled[0], shuffled);
+        if (tracks.length === 0) return;
+
+        if (isShuffleActive) {
+            setQueue(tracks);
+            setIsShuffleActive(false);
+            return;
         }
+
+        const shuffled = [...tracks].sort(() => Math.random() - 0.5);
+        setIsShuffleActive(true);
+        playTrackFromQueue(shuffled[0], shuffled);
     };
 
     const saved = album ? isAlbumSaved(album.id) : false;
@@ -179,8 +189,12 @@ export default function AlbumPage() {
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="w-12 h-12 text-muted-foreground hover:text-foreground"
+                    className="w-12 h-12 text-muted-foreground transition-all duration-200"
                     onClick={handleShuffle}
+                    aria-pressed={isShuffleActive}
+                    data-shuffle-active={isShuffleActive}
+                    aria-label={isShuffleActive ? "Turn off shuffle" : "Shuffle album tracks"}
+                    title={isShuffleActive ? "Turn off shuffle" : "Shuffle album tracks"}
                 >
                     <IoShuffleSharp className="w-6 h-6" />
                 </Button>
